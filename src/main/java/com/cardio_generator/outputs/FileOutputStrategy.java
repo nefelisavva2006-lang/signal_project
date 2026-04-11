@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.concurrent.ConcurrentHashMap;
 
+//change fileOutputStrategy to File...
 public class FileOutputStrategy implements OutputStrategy {
 
     private String BaseDirectory;
@@ -25,17 +26,17 @@ public class FileOutputStrategy implements OutputStrategy {
             Files.createDirectories(Paths.get(BaseDirectory));
         } catch (IOException e) {
             System.err.println("Error creating base directory: " + e.getMessage());
-            return;
+            return; 
         }
-        // Set the FilePath variable
-        String FilePath = file_map.computeIfAbsent(label, k -> Paths.get(BaseDirectory, label + ".txt").toString());
+        // Set the FilePath variable, (change FilePath to filePath)
+        String filePath = file_map.computeIfAbsent(label, k -> Paths.get(BaseDirectory, label + ".txt").toString());
 
         // Write the data to the file
         try (PrintWriter out = new PrintWriter(
-                Files.newBufferedWriter(Paths.get(FilePath), StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
+                Files.newBufferedWriter(Paths.get(filePath), StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
             out.printf("Patient ID: %d, Timestamp: %d, Label: %s, Data: %s%n", patientId, timestamp, label, data);
         } catch (Exception e) {
-            System.err.println("Error writing to file " + FilePath + ": " + e.getMessage());
+            System.err.println("Error writing to file " + filePath + ": " + e.getMessage());
         }
     }
 }

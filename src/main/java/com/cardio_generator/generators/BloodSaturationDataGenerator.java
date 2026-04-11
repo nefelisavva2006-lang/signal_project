@@ -8,6 +8,11 @@ public class BloodSaturationDataGenerator implements PatientDataGenerator {
     private static final Random random = new Random();
     private int[] lastSaturationValues;
 
+    /**
+     * Initializes the generator with a baseline saturation value 
+     * for each patient between 95% and 100%
+     * @param patientCount total number of patients to generate data for
+     */
     public BloodSaturationDataGenerator(int patientCount) {
         lastSaturationValues = new int[patientCount + 1];
 
@@ -16,6 +21,14 @@ public class BloodSaturationDataGenerator implements PatientDataGenerator {
             lastSaturationValues[i] = 95 + random.nextInt(6); // Initializes with a value between 95 and 100
         }
     }
+
+    /**
+     * Generates a new blood saturation reading for the specified patient.
+     * The value changes slightly each time by a small random amount and 
+     * is always kept between 90% and 100%
+     * @param patientId patient id number 
+     * @param outputStrategy the strategy used to output the generated data 
+     */
 
     @Override
     public void generate(int patientId, OutputStrategy outputStrategy) {

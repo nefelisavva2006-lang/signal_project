@@ -46,11 +46,13 @@ public class HealthDataSimulator {
 
     private static void parseArguments(String[] args) throws IOException {
         for (int i = 0; i < args.length; i++) {
+            //prints instructions nd exists the program if you type -h
             switch (args[i]) {
                 case "-h":
                     printHelp();
                     System.exit(0);
                     break;
+                //set the number of patients and gives an error if letters are typed
                 case "--patient-count":
                     if (i + 1 < args.length) {
                         try {
@@ -61,6 +63,7 @@ public class HealthDataSimulator {
                         }
                     }
                     break;
+                    //checks what output you chose 
                 case "--output":
                     if (i + 1 < args.length) {
                         String outputArg = args[++i];
@@ -121,7 +124,7 @@ public class HealthDataSimulator {
         System.out.println(
                 "  This command simulates data for 100 patients and sends the output to WebSocket clients connected to port 8080.");
     }
-
+     //creates a list of patient ID numbers 
     private static List<Integer> initializePatientIds(int patientCount) {
         List<Integer> patientIds = new ArrayList<>();
         for (int i = 1; i <= patientCount; i++) {
@@ -131,6 +134,7 @@ public class HealthDataSimulator {
     }
 
     private static void scheduleTasksForPatients(List<Integer> patientIds) {
+        //creates a data generator for each type of data 
         ECGDataGenerator ecgDataGenerator = new ECGDataGenerator(patientCount);
         BloodSaturationDataGenerator bloodSaturationDataGenerator = new BloodSaturationDataGenerator(patientCount);
         BloodPressureDataGenerator bloodPressureDataGenerator = new BloodPressureDataGenerator(patientCount);
@@ -145,7 +149,8 @@ public class HealthDataSimulator {
             scheduleTask(() -> alertGenerator.generate(patientId, outputStrategy), 20, TimeUnit.SECONDS);
         }
     }
-
+    
+    //sets the timer for eaxh task
     private static void scheduleTask(Runnable task, long period, TimeUnit timeUnit) {
         scheduler.scheduleAtFixedRate(task, random.nextInt(5), period, timeUnit);
     }
